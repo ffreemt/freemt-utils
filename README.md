@@ -1,13 +1,14 @@
-# baidu-tr-async-free ![Python package](https://github.com/ffreemt/baidu-tr-async-free/workflows/Python3.6|3.7%20package/badge.svg) [![codecov](https://codecov.io/gh/ffreemt/baidu-tr-async-free/branch/master/graph/badge.svg)](https://codecov.io/gh/ffreemt/baidu-tr-async-free)
+# freemt-utils ![Python3.6|3.7 package](https://github.com/ffreemt/freemt-utils/workflows/Python3.6%7C3.7%20package/badge.svg)[![codecov](https://codecov.io/gh/ffreemt/freemt-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/ffreemt/freemt-utils)
+
 baidu translate for free with async and proxy support
 
 ### Installation
 Not available yet
-```pip install baidu-tr-async```
+```pip install freemt-utils```
 
 Validate installation
 ```
-python -c "import bdtr_async; print(bdtr_async.__version__)"
+python -c "import freemt_utils; print(freemt_utils.__version__)"
 0.0.1
 ```
 
@@ -15,12 +16,9 @@ python -c "import bdtr_async; print(bdtr_async.__version__)"
 
 ```
 import asyncio
-from bdtr_async import bdtr_async
+from freemt_utils import save_tempfile, switch_to, httpx_get, make_url
 
-asyncio.get_event_loop().run_until_complete(bdtr_async('test this and that'))
-# '测试这个和那个'
+res = asyncio.get_event_loop().run_until_complete(httpx_get('http://www.baidu.com'))
+print(res.headers)
+# ...
 ```
-
-### Acknowledgments
-
-* Thanks to everyone whose code was used
