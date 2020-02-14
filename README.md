@@ -15,10 +15,24 @@ python -c "import freemt_utils; print(freemt_utils.__version__)"
 ### Usage
 
 ```
+from pathlib import Path
 import asyncio
 from freemt_utils import save_tempfile, switch_to, httpx_get, make_url, arun, fetch_proxies
 
-res = asyncio.get_event_loop().run_until_complete(httpx_get('http://www.baidu.com'))
+with switch_to():
+  print(Path.cwd())  # home dir
+print(Path.cwd())  # back to the current work directory
+
+try:
+  arun(httpx_get('www.baidu.com'))
+except Exception as exc:
+  print(exc)  # InvalidURL: No scheme included in URL.
+
+res = arun(httpx_get(make_url('www.baidu.com')))
 print(res.headers)
-# ...
+# Headers([('bdpagetype', '1'), ('bdqid',...
+
+res.encoding = 'UTF-8'
+save_tempfile(res.text)  # display res.text in the default browser 
+
 ```
