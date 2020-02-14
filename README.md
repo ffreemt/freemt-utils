@@ -1,4 +1,4 @@
-# freemt-utils ![Python3.6|3.7 package](https://github.com/ffreemt/freemt-utils/workflows/Python3.6%7C3.7%20package/badge.svg)[![codecov](https://codecov.io/gh/ffreemt/freemt-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/ffreemt/freemt-utils)
+# freemt-utils ![Python3.6|3.7 package](https://github.com/ffreemt/freemt-utils/workflows/Python3.6%7C3.7%20package/badge.svg)![Codecov](https://github.com/ffreemt/freemt-utils/workflows/Codecov/badge.svg)
 
 various utils for freemt
 
