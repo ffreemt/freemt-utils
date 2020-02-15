@@ -1,0 +1,65 @@
+'''
+get geoinfo
+
+iplist =  ['223.4.72.242', '37.187.116.199', '210.22.5.117', '223.111.131.100', '36.25.243.251', '39.137.107.98', '151.253.165.70', '31.220.55.166', '39.106.223.134', '117.88.176.77', '101.95.115.196', '113.200.105.45', '117.88.4.141', '39.137.69.7', '47.244.239.147', '196.22.249.124', '183.146.213.157', '36.25.243.51', '116.207.131.19', '218.60.8.99', '101.95.115.196', '183.240.22.3', '116.114.19.211']
+
+g = (aget_geoinfo(ip) for ip in iplist)
+res = [*limited_as_completed(g, 10)]
+
+%time [*limited_as_completed((aget_geoinfo(ip) for ip in iplist), 30)]
+# 2s
+
+'''
+
+from loguru import logger
+from pyquery import PyQuery as pq  # type: ignore
+import httpx
+
+from httpx_get import httpx_get
+
+
+def get_geoinfo(ip_add: str) -> str:
+    ''' get geoinfo from ipip dot net '''
+    try:
+        resp = httpx_get(f'https://www.ipip.net/ip/{ip_add}.html')
+        resp.raise_for_status()
+    except Exception as exc:
+        logger.error(exc)
+        res = ''
+        return str(exc)
+    try:
+        doc = pq(resp.text)
+        css = 'tr:nth-child(3) > td:nth-child(2) > span:nth-child(1)'
+        res = doc(css).text().strip()[:2]
+    except Exception as exc:
+        logger.error(exc)
+        res = ''
+
+    return res
+
+async def aget_geoinfo(ip_add: str) -> str:
+    ''' get geoinfo from ipip dot net '''
+    try:
+        resp = await httpx.get(f'https://www.ipip.net/ip/{ip_add}.html')
+        resp.raise_for_status()
+    except Exception as exc:
+        logger.error(exc)
+        res = ''
+
+    try:
+        doc = pq(resp.text)
+        css = 'tr:nth-child(3) > td:nth-child(2) > span:nth-child(1)'
+        res = doc(css).text().strip()[:2]
+    except Exception as exc:
+        logger.error(exc)
+        res = ''
+
+    return ip, res
+
+
+def main():
+    ''' '''
+    import argparse
+    
+if __name__ == '__main__':
+    main()

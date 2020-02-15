@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ffreemt-utils"
+version = "0.0.1"
+description = "Various utils for freemt"
+authors = ["ffreemt"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+loguru = "^0.4.1"
+
+[tool.poetry.dev-dependencies]
+httpx = "^0.11.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

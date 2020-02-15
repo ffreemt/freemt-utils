@@ -1,0 +1,130 @@
+''' fetch jhao proxypool redis
+
+snippets from check-proxy-httpx.py
+'''
+from typing import List, Any
+
+import sys
+import json
+# from pprint import pprint
+import redis  # type: ignore
+
+# pip install ip2geotools
+# from ip2geotools.databases.noncommercial import DbIpCity
+# response = DbIpCity.get('147.229.2.90', api_key='free')
+# response.country  # 'CZ'
+
+from tqdm import tqdm
+from loguru import logger
+
+from .get_geoinfo import get_geoinfo
+
+DEBUG = 0
+DEBUG = 1
+# disable debug if debug set to False/0
+if not DEBUG:
+    logger.remove()
+    logger.add(sys.stderr, level="INFO")
+
+
+def fetch_proxies(
+        host: str = 'localhost',
+        port: int = 6379,
+        password: str = '',
+        table: str = 'useful_proxy',
+        geoinfo: bool = False,
+) -> List[Any]:
+    ''' fetch proxies from redis (localhost:6379)
+
+    jhao prxoypool in acone 2, autossh via localhost:6379
+
+    host: str = 'localhost'
+    password: str = ''
+    port: int = 6379
+    table: str = 'useful_proxy'
+
+    '''
+    # client = redis.StrictRedis(host='localhost', port=6379)
+    client = redis.StrictRedis(host=host, port=port, password=password)
+
+    try:
+        client.ping()
+    except Exception as exc:
+        logger.error(f'Cant not connect to redis localhost:6379: {exc}')
+        raise SystemExit('try autossh local 6379 to acone2:6379 and try again ')
+
+    _ = table
+
+    logger.info('\n\t Fetcching ip proxies from redis')
+    proxy_list = client.hgetall(_)
+    # ip_list = [elm.decode() for elm in proxy_list if isinstance(elm, bytes)]
+
+    # close the connection
+    del client
+
+    # decode and converted to json
+    _ = {elm.decode(): json.loads(proxy_list.get(elm)) for elm in proxy_list}
+
+    # extract proxy, check_coun. geoinfo
+    ip_list = [[key, val['check_count'], val['source'], ] for key, val in _.items()]
+
+    if not geoinfo:
+        return ip_list
+
+    logger.info('\n\t Fetcching geo info')
+    geoinfo = []
+    for elm in tqdm(ip_list):
+        ip = elm[0].split(':')[0]
+
+        # https://www.ipip.net/ip/112.84.73.143.html
+        # tr:nth-child(3) > td:nth-child(2)
+        try:
+            # geo = DbIpCity.get(ip, api_key='free').country
+            geo = get_geoinfo(ip)
+        except Exception as exc:
+            logger.error(exc)
+            geo = ''
+        geoinfo.append(geo)
+
+    _ = '''
+    # attach check_count info
+    get_count = lambda idx: json.loads(proxy_list.get([*proxy_list][idx])).get('check_count')  # noqa
+
+    res_info = [res[idx] + (get_count(idx),) for idx, elm in enumerate(res)]
+    # '''
+
+    _ = [elm1 + [elm2] for elm1, elm2 in zip(ip_list, geoinfo)]
+
+    return _
+
+
+if __name__ == '__main__':
+    from pprint import pprint
+    import importlib
+    timed_fetch_headers = importlib.import_module('async-headers').timed_fetch_headers
+
+    from limited_as_completed import limited_as_completed
+    from timeme import timeme
+
+    proxies = fetch_proxies()
+    pprint(proxies)
+
+    coros = (timed_fetch_headers(proxy) for proxy in proxies)
+    with timeme():
+        res = [*limited_as_completed(coros)]
+    pprint([res, len(res)])
+
+    good_proxies = sorted([elm for elm in res if elm[3] is True], key=lambda x: x[-1])
+    pprint([good_proxies, len(good_proxies), len(res)])
+
+    # --- geoinfo
+    proxies = fetch_proxies(geoinf=1)
+    pprint(proxies)
+
+    coros = (timed_fetch_headers(proxy) for proxy in proxies)
+    with timeme():
+        res = [*limited_as_completed(coros)]
+    pprint([res, len(res)])
+
+    good_proxies = sorted([elm for elm in res if elm[3] is True], key=lambda x: x[-1])
+    pprint([good_proxies, len(good_proxies), len(res)])
