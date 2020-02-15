@@ -5,6 +5,7 @@ omit =
   freemt_utils/arun.py
   freemt_utils/save_tempfile.py
   freemt_utils/httpx_get.py
+  freemt_utils/logger_level.py
 [report]
 exclude_lines =
     pragma: no cover
