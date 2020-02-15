@@ -11,7 +11,7 @@ import httpx
 import pytest
 from loguru import logger
 
-from make_url import make_url
+from .make_url import make_url
 # from arun import arun
 
 HEADERS = {
