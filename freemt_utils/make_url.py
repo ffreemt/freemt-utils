@@ -1,6 +1,7 @@
 '''
 preppend http:// if not present
 '''
+from typing import Optional
 
 import re
 import urllib  # pylint: disable=unused-import  # needed for typing
@@ -10,7 +11,7 @@ from loguru import logger
 
 
 def make_url(  # pylint: disable=too-many-branches
-        url: str,
+        url: Optional[str] = None,
         schema: str = 'http',
 ) -> str:
     ''' prepent scheme (default http)
@@ -25,6 +26,9 @@ def make_url(  # pylint: disable=too-many-branches
     >>> make_url('http://173.82.240.230:5000/json')
     'http://173.82.240.230:5000/json'
     '''
+
+    if url is None:
+        return None
 
     if not isinstance(url, (bytes, str)):  # pragma: no cover
         logger.warning(f'\n\t url provided: {url}, not str nor bytes, returning empty')

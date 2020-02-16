@@ -17,7 +17,7 @@ python -c "import freemt_utils; print(freemt_utils.__version__)"
 ```
 from pathlib import Path
 import asyncio
-from freemt_utils import save_tempfile, switch_to, httpx_get, make_url, arun, fetch_proxies
+from freemt_utils import save_tempfile, switch_to, httpx_get, make_url, arun, fetch_proxies, logger_level
 
 with switch_to():
   print(Path.cwd())  # home dir
@@ -32,7 +32,9 @@ res = arun(httpx_get(make_url('www.baidu.com')))
 print(res.headers)
 # Headers([('bdpagetype', '1'), ('bdqid',...
 
+logger_level('info')
+
 res.encoding = 'UTF-8'
-save_tempfile(res.text)  # display res.text in the default browser 
+save_tempfile(res.text)  # display res.text in the default browser
 
 ```

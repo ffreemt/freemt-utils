@@ -1,16 +1,14 @@
 '''
 set logger level of loguru DEBUG INFO
 '''
-# pylint: disable=undefined-variable, broad-except
+# pylint: disable=broad-except
 
 import sys
+from loguru import logger
 
 
 def logger_level(level: str = 'DEBUG') -> None:
     ''' set logger level'''
-    if 'logger' not in globals():
-        print('logger not set.. do: from loguru import logger')
-        return
 
     try:
         logger.remove()  # noqa

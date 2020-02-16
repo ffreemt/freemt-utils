@@ -22,6 +22,6 @@ for elm in Path(__file__).parent.glob('*.py'):
 
 # version__ = '0.0.1'
 # date__ = '2020.2.12'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __date__ = '2020.2.15'
 VERSION = tuple(__version__.split('.'))
