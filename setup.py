@@ -13,7 +13,10 @@ _ = Path(f'{dir_name}/__init__.py').read_text(encoding='utf-8')
 version, *_ = re.findall(r"__version__\W*=\W*'([^']+)'", _)
 targz = 'v_' + version.replace('.', '') + '.tar.gz'
 
-install_requires = ['httpx', 'tqdm', 'redis', 'cchardet', 'pytest', 'logzero', 'sacremoses']
+install_requires = ['httpx', 'tqdm', 'redis', 'pytest',
+    'logzero', 'sacremoses',
+    'numpy',
+]
 
 README_rst = f'{curr_dir}/README.md'
 long_description = (
