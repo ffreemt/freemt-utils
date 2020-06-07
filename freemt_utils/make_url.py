@@ -1,19 +1,21 @@
 '''
 preppend http:// if not present
 '''
-from typing import Optional
+from typing import Optional, Union
 
 import re
 import urllib  # pylint: disable=unused-import  # needed for typing
 from urllib import parse
 
-from loguru import logger
+# from loguru import logger
+from logzero import logger
 
 
 def make_url(  # pylint: disable=too-many-branches
-        url: Optional[str] = None,
+        # url: Optional[str] = None,
+        url: Optional[Union[str, bytes]] = None,
         schema: str = 'http',
-) -> str:
+) -> Optional[Union[str, bytes]]:
     ''' prepent scheme (default http)
         http/https/socks if not present
 

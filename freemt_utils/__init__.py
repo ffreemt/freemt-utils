@@ -3,12 +3,17 @@
 # from pathlib import Path
 # import importlib
 
-from .switch_to import switch_to
-from .arun import arun
-from .make_url import make_url
-from .httpx_get import httpx_get
-from .save_tempfile import save_tempfile
-from .logger_level import logger_level
+from .switch_to import switch_to  # noqa: F401
+from .arun import arun  # noqa: F401
+from .make_url import make_url  # noqa: F401
+from .httpx_get import httpx_get  # noqa: F401
+from .save_tempfile import save_tempfile  # noqa: F401
+from .logger_level import logger_level  # noqa: F401
+from .mtok import mtok, mdetok  # noqa: F401
+from .cos_matrix2 import cos_matrix2  # noqa: F401
+from .with_func_attrs import with_func_attrs  # noqa: F401
+from .report_time import report_time  # noqa: F401
+
 
 # sys.path.insert(0, '..')
 
@@ -22,6 +27,7 @@ for elm in Path(__file__).parent.glob('*.py'):
 
 # version__ = '0.0.1'
 # date__ = '2020.2.12'
-__version__ = '0.0.4'
-__date__ = '2020.2.15'
+# version__ = '0.0.4'
+# version__ = '0.0.5'
+__version__ = '0.0.6'
 VERSION = tuple(__version__.split('.'))

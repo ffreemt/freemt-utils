@@ -5,7 +5,8 @@ http://ralsina.me/weblog/posts/BB963.html
 import os
 import pathlib
 from contextlib import contextmanager
-from loguru import logger
+# from loguru import logger
+from logzero import logger
 
 
 @contextmanager

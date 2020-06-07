@@ -10,7 +10,7 @@ def test_make_url():
     assert make_url('http://173.82.240.230:5000/json') == 'http://173.82.240.230:5000/json'
 
 
-def  test_make_url_none():
+def test_make_url_none():
     ''' test_make_url_none '''
     assert make_url() is None
     assert make_url(None) is None

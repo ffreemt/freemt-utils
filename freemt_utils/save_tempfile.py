@@ -20,11 +20,13 @@ from pathlib import Path
 import tempfile
 import subprocess
 import platform
-import cchardet
+# import cchardet
+import chardet
 
 # from nose.tools import (eq_, with_setup)
 
-from loguru import logger as LOGGER
+# from loguru import logger as LOGGER
+from logzero import logger as LOGGER
 
 
 # def savetofile(text, filename='out.html', encoding='utf-8', start=False):
@@ -41,8 +43,9 @@ def save_tempfile(text, filename=None, encoding='utf-8', start=True):  # pylint:
         return ''
 
     if isinstance(text, bytes):
-        _ = cchardet.detect(text)
-        enc = _['encoding']
+        # _ = cchardet.detect(text)
+        _ = chardet.detect(text)
+        enc = _['encoding'][:5]  # takes only the first 5
         if enc is None:
             enc = 'UTF-8'
 
@@ -61,7 +64,7 @@ def save_tempfile(text, filename=None, encoding='utf-8', start=True):  # pylint:
         try:
             fpath = Path(filename).absolute()
         except Exception as exc:
-            LOGGER.error(" fpath = Path(filename).absolute() Exception: %s, exiting" % exc)
+            LOGGER.error(" fpath = Path(filename).absolute() Exception: %s, exiting", exc)
             return ''
 
     if encoding.lower() in ['utf8', 'utf-8']:
@@ -74,7 +77,7 @@ def save_tempfile(text, filename=None, encoding='utf-8', start=True):  # pylint:
     with open(str(fpath), 'w', encoding=encoding) as fhandle:
         fhandle.write(text)
         # LOGGER.info("\n\tSaved to %s (encoding: %s)", str(fpath), encoding)
-        LOGGER.info("\n\tSaved to %s" % str(fpath))
+        LOGGER.info("\n\tSaved to %s", str(fpath))
 
     if start:
         # modi
@@ -85,8 +88,16 @@ def save_tempfile(text, filename=None, encoding='utf-8', start=True):  # pylint:
             LOGGER.info('Platform is %s, exiting...' % platform_)
             return fpath.__str__()
 
+        _ = """
+            if sys.platform == "win32":
+                os.startfile(filename)
+            else:
+                opener ="open" if sys.platform == "darwin" else "xdg-open"
+                subprocess.call([opener, filename])
+        # """
+
         try:
-            os.startfile(str(fpath))
+            os.startfile(str(fpath))  # type: ignore
             return fpath.__str__()
         except Exception as exc:
             LOGGER.debug('startfile didnt work ...: %s' % exc)

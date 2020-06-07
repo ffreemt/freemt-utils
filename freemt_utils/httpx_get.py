@@ -9,7 +9,8 @@ from pprint import pprint
 import httpx
 
 import pytest
-from loguru import logger
+# from loguru import logger
+from logzero import logger
 
 from .make_url import make_url
 # from arun import arun
@@ -45,6 +46,10 @@ async def httpx_get(url, proxy=None, timeout=4, verify=False, connect_timeout=8.
     if headers is None:
         headers = HEADERS
 
+    # if proxy is suppied as str, convert to dict
+    if isinstance(proxy, str):
+        proxy = {'http': make_url(proxy), 'https': make_url(proxy)}
+
     # timeout exception
     try:
         async with httpx.AsyncClient(
@@ -74,8 +79,7 @@ async def httpx_get(url, proxy=None, timeout=4, verify=False, connect_timeout=8.
             request=req,
             content=str(exc).encode(),
         )
-    finally:
-        logger.debug('resp: %s' % resp.text[:10])
+    # finally: logger.debug('resp: %s' % resp.text[:10])
 
     return resp
 
