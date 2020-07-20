@@ -13,6 +13,7 @@ from .mtok import mtok, mdetok  # noqa: F401
 from .cos_matrix2 import cos_matrix2  # noqa: F401
 from .with_func_attrs import with_func_attrs  # noqa: F401
 from .report_time import report_time  # noqa: F401
+from .langcode_to_tmxcode import langcode_to_tmxcode  # noqa: F401
 
 
 # sys.path.insert(0, '..')
@@ -29,5 +30,6 @@ for elm in Path(__file__).parent.glob('*.py'):
 # date__ = '2020.2.12'
 # version__ = '0.0.4'
 # version__ = '0.0.5'
-__version__ = '0.0.6'
+# version__ = '0.0.6'
+__version__ = '0.0.7'
 VERSION = tuple(__version__.split('.'))

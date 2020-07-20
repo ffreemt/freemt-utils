@@ -16,6 +16,7 @@ targz = 'v_' + version.replace('.', '') + '.tar.gz'
 install_requires = ['httpx', 'tqdm', 'redis', 'pytest',
     'logzero', 'sacremoses',
     'numpy',
+    'marisa_trie', 'langcoes',
 ]
 
 README_rst = f'{curr_dir}/README.md'
