@@ -2,6 +2,12 @@
 
 various utils for freemt
 
+### Update v.0.0.7
+
+`langcode_to_tmxcode`: need (`marisa-trie`) and `langcodes`.
+
+If you don't have VC in the system, you'll need to install a whl version of `marisa-trie` that can be downloaded from https://www.lfd.uci.edu/~gohlke/pythonlibs/#marisa-trie
+
 ### Installation
 
 ```pip install freemt-utils```
