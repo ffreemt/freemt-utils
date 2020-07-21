@@ -1,4 +1,5 @@
 ''''report time.
+see also from linetimer import CodeTimer
 '''
 
 import contextlib

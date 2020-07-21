@@ -12,3 +12,7 @@ def test_langcode_to_tmxcode():
     assert langcode_to_tmxcode("en-uk") == "en-GB"
     assert langcode_to_tmxcode("de") == "de-DE"
     assert langcode_to_tmxcode("en-ca") == "en-CA"
+
+def test_pt():
+    """ test pt. """
+    langcode_to_tmxcode("pt") == "pt-PT"

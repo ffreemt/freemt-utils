@@ -1,6 +1,8 @@
 r""" convert langcode str to a TMX code (langid-LOCALE).
 
 refer to snippets-mat\langcodes-tmx-python.txt
+
+http://www.lingoes.net/en/translator/langcode.htm
 """
 
 from pathlib import Path
@@ -38,9 +40,14 @@ def langcode_to_tmxcode(langcode: str, default="en_US") -> str:
     'de-DE'
     >>> langcode_to_tmxcode("en-ca")
     'en-CA'
+    >>> langcode_to_tmxcode("pt")
+    'pt-PT'
     """
     if langcode.lower() == "zh-cht":
         langcode = "zh-tw"
+
+    if langcode.lower() == "pt":
+        langcode = "pt-pt"
 
     lc_ = standardize_tag(langcode)
 
